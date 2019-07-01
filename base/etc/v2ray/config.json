@@ -1,0 +1,51 @@
+{
+  "log" : {
+    "access": "/var/log/v2ray/access.log", 
+    "error": "/var/log/v2ray/error.log", 
+    "loglevel": "warning"
+  }, 
+  "inbounds": [
+    {
+      "listen":"0.0.0.0",
+      "port": 10240, 
+      "protocol": "vmess", 
+      "settings": {
+        "clients": [
+          {
+            "id": "c156c8c8-f806-4294-9688-4263a7ca614a", 
+            "level": 1, 
+            "alterId": 10
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws", 
+        "wsSettings": {
+          "path": "/sakura"
+        }
+      }
+    }
+  ],
+  "outbounds":[
+    {
+      "protocol":"freedom",
+      "settings":{}
+    },
+    {
+      "protocol":"blackhole",
+      "settings":{},
+      "tag":"blocked"
+    }
+  ],
+  "routing": {
+    "rules":[
+      {
+        "type": "field", 
+        "ip": [
+          "geoip:private"
+        ], 
+        "outboundTag": "blocked"
+      }
+    ]
+  }
+}
