@@ -5,6 +5,8 @@
     "password":"herosocks",
     "timeout":60,
     "method":"chacha20-ietf-poly1305",
-    "plugin":"obfs-server",
-    "plugin_opts":"obfs=http"
+    "fast_open": true,
+    "mode": "tcp_and_udp",
+    "plugin":"v2ray-plugin",
+    "plugin_opts":"server"
 }

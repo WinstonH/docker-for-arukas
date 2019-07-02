@@ -19,7 +19,7 @@ RUN apk --update --no-cache add supervisor sudo bash curl vim wget openssl opens
 && adduser  -G alpine -s /bin/sh -D alpine \
 && echo "alpine:alpine" | /usr/sbin/chpasswd \
 && echo "alpine    ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
-# Compile Shadowsocks + simple-obfs
+# Install Shadowsocks + plugin
 && cd /tmp \
 && git clone ${SS_GIT_PATH} \
 && cd ${SS_GIT_PATH##*/} \
@@ -28,12 +28,10 @@ RUN apk --update --no-cache add supervisor sudo bash curl vim wget openssl opens
 && ./configure --prefix=/usr && make \
 && make install \
 && cd /tmp \
-&& git clone ${OBFS_GIT_PATH} \
-&& cd ${OBFS_GIT_PATH##*/} \
-&& git submodule update --init --recursive \
-&& ./autogen.sh \
-&& ./configure --prefix=/usr && make \
-&& make install \
+&& plugin_VERSION=$(curl -s https://api.github.com/repos/shadowsocks/v2ray-plugin/releases/latest | grep tag_name | awk  -F '"' '{print $4}') \
+&& wget https://github.com/shadowsocks/v2ray-plugin/releases/download/$plugin_VERSION/v2ray-plugin-linux-amd64-$plugin_VERSION.tar.gz \
+&& tar -xzvf v2ray-plugin-linux-amd64-*.tar.gz \
+&& mv v2ray-plugin_linux_amd64 /usr/bin/v2ray-plugin \
 && apk del TMP \
 && rm -rf /tmp/* /var/cache/apk/* 
 
@@ -57,8 +55,8 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # V2Ray
 RUN mkdir -p /usr/bin/v2ray/ \
 && cd /tmp \
-&& VER=$(curl -s https://api.github.com/repos/v2ray/v2ray-core/releases/latest | grep tag_name | awk  -F '"' '{print $4}') \
-&& wget https://github.com/v2ray/v2ray-core/releases/download/$VER/v2ray-linux-64.zip \
+&& V2Ray_VERSION=$(curl -s https://api.github.com/repos/v2ray/v2ray-core/releases/latest | grep tag_name | awk  -F '"' '{print $4}') \
+&& wget https://github.com/v2ray/v2ray-core/releases/download/$V2Ray_VERSION/v2ray-linux-64.zip \
 && unzip v2ray-linux-64.zip \
 && chmod +x v2ray v2ctl \
 && mv v2* /usr/bin/v2ray/ \
