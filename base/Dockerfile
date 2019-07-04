@@ -47,8 +47,6 @@ RUN sudo mkdir -p /var/run/sshd \
 && sudo sed -i "s/#X11Forwarding no/X11Forwarding yes/g" /etc/ssh/sshd_config \
 && sudo sed -i "s/#PermitUserEnvironment no/PermitUserEnvironment yes/g" /etc/ssh/sshd_config \
 && sudo echo "ForwardX11Trusted yes" >> /etc/ssh/ssh_config
-# 安装cloud-torrent
-RUN curl https://i.jpillora.com/cloud-torrent! | bash
 # 配置nginx
 RUN mkdir -p /run/nginx
 COPY nginx.conf /etc/nginx/nginx.conf
@@ -67,6 +65,6 @@ RUN mkdir -p /usr/bin/v2ray/ \
 ADD etc /etc
 
 WORKDIR /home/alpine
-EXPOSE 80 22 3000
+EXPOSE 80 22
 USER alpine
 ENTRYPOINT ["entrypoint.sh"]
