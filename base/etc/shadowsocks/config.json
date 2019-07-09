@@ -8,5 +8,5 @@
     "fast_open": true,
     "mode": "tcp_and_udp",
     "plugin":"v2ray-plugin",
-    "plugin_opts":"server"
+    "plugin_opts":"server;path=/ss"
 }

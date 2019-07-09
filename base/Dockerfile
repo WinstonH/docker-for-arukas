@@ -48,7 +48,6 @@ RUN sudo mkdir -p /var/run/sshd \
 && sudo sed -i "s/#PermitUserEnvironment no/PermitUserEnvironment yes/g" /etc/ssh/sshd_config \
 && sudo echo "ForwardX11Trusted yes" >> /etc/ssh/ssh_config
 # 配置nginx
-RUN mkdir -p /run/nginx
 COPY nginx.conf /etc/nginx/nginx.conf
 # V2Ray
 RUN mkdir -p /usr/bin/v2ray/ \
