@@ -8,8 +8,8 @@ sudo mkdir -p /run/nginx
 sudo nginx
 # mark date
 sudo wget https://raw.githubusercontent.com/WinstonH/v2ray-heroku/master/index.html -O /var/lib/nginx/html/index.html
-VERSION=$(v2ray --version |grep V |awk '{print $2}')
-BUILDDATE=$(v2ray --version |grep V |awk '{print $4}')
+VERSION=$(sudo /usr/bin/v2ray/v2ray --version |grep V |awk '{print $2}')
+BUILDDATE=$(sudo /usr/bin/v2ray/v2ray --version |grep V |awk '{print $4}')
 REBOOTDATE=$(date)
 
 sudo sed -i "s/VERSION/$VERSION/g" /var/lib/nginx/html/index.html

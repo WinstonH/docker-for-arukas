@@ -35,9 +35,6 @@ RUN apk --update --no-cache add supervisor sudo bash curl vim wget openssl opens
 && apk del TMP \
 && rm -rf /tmp/* /var/cache/apk/* 
 
-# 使用entrypoint.sh，便于定制自己的镜像
-COPY entrypoint.sh /usr/sbin/entrypoint.sh
-
 # 配置SSH
 RUN sudo mkdir -p /var/run/sshd \
 && sudo sed -i "s/UsePrivilegeSeparation.*/UsePrivilegeSeparation no/g" /etc/ssh/sshd_config \
@@ -47,8 +44,7 @@ RUN sudo mkdir -p /var/run/sshd \
 && sudo sed -i "s/#X11Forwarding no/X11Forwarding yes/g" /etc/ssh/sshd_config \
 && sudo sed -i "s/#PermitUserEnvironment no/PermitUserEnvironment yes/g" /etc/ssh/sshd_config \
 && sudo echo "ForwardX11Trusted yes" >> /etc/ssh/ssh_config
-# 配置nginx
-COPY nginx.conf /etc/nginx/nginx.conf
+
 # V2Ray
 RUN mkdir -p /usr/bin/v2ray/ \
 && cd /tmp \
@@ -61,9 +57,14 @@ RUN mkdir -p /usr/bin/v2ray/ \
 && rm -rf v2ray-linux-64.zip /tmp/* \
 && mkdir /var/log/v2ray/ \
 && mkdir -p /etc/v2ray
+
 ADD etc /etc
+# 使用entrypoint.sh，便于定制自己的镜像
+COPY entrypoint.sh /usr/sbin/entrypoint.sh
+# 配置nginx
+COPY default.conf /etc/nginx/conf.d/default.conf
 
 WORKDIR /home/alpine
-EXPOSE 80 22
+EXPOSE 80 22 4000/udp
 USER alpine
 ENTRYPOINT ["entrypoint.sh"]
